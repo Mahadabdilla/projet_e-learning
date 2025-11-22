@@ -1,0 +1,201 @@
+<div class="dashboard-container">
+  <!-- Header -->
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div class="welcome-section">
+        <h1 class="dashboard-title">Tableau de Bord Formateur</h1>
+        <p class="welcome-text">Bienvenue, <strong>{{ user?.firstName }} {{ user?.lastName }}</strong> ! 👋</p>
+      </div>
+      <button class="btn-create" routerLink="/formateur/formations/create">
+        <span class="icon">➕</span>
+        Créer une nouvelle formation
+      </button>
+    </div>
+  </header>
+
+  <!-- Stats Cards -->
+  <section class="stats-section">
+    <div class="stats-grid">
+      <!-- Mes Formations -->
+      <div class="stat-card gradient-purple">
+        <div class="stat-icon">📚</div>
+        <div class="stat-content">
+          <h3 class="stat-label">Mes Formations</h3>
+          <p class="stat-value">{{ stats.totalFormations }}</p>
+          <span class="stat-trend">
+            <span class="trend-icon">📈</span>
+            Total de formations créées
+          </span>
+        </div>
+      </div>
+
+      <!-- Total Apprenants -->
+      <div class="stat-card gradient-blue">
+        <div class="stat-icon">👥</div>
+        <div class="stat-content">
+          <h3 class="stat-label">Total Apprenants</h3>
+          <p class="stat-value">{{ stats.totalApprenants }}</p>
+          <span class="stat-trend">
+            <span class="trend-icon">⬆️</span>
+            Tous vos cours confondus
+          </span>
+        </div>
+      </div>
+
+      <!-- Note Moyenne -->
+      <div class="stat-card gradient-green">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-content">
+          <h3 class="stat-label">Note Moyenne</h3>
+          <p class="stat-value">{{ stats.noteMoyenne | number:'1.1-1' }}/5</p>
+          <span class="stat-trend">
+            <span class="trend-icon">✨</span>
+            Satisfaction globale
+          </span>
+        </div>
+      </div>
+
+      <!-- Revenus Estimés -->
+      <div class="stat-card gradient-orange">
+        <div class="stat-icon">💰</div>
+        <div class="stat-content">
+          <h3 class="stat-label">Revenus Estimés</h3>
+          <p class="stat-value">{{ stats.revenusEstimes | number }} FCFA</p>
+          <span class="stat-trend">
+            <span class="trend-icon">💵</span>
+            Revenus totaux
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Grid -->
+  <div class="content-grid">
+    <!-- Mes Formations -->
+    <section class="content-card formations-card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span class="title-icon">📖</span>
+          Mes Formations
+        </h2>
+        <button class="btn-secondary" routerLink="/formateur/formations/create">
+          + Nouvelle formation
+        </button>
+      </div>
+
+      <div class="formations-list" *ngIf="formations.length > 0; else noFormations">
+        <div class="formation-item" *ngFor="let formation of formations">
+          <div class="formation-info">
+            <div class="formation-thumbnail">
+              <span class="thumbnail-icon">📚</span>
+            </div>
+            <div class="formation-details">
+              <h3 class="formation-title">{{ formation.title }}</h3>
+              <div class="formation-meta">
+                <span class="meta-item">
+                  <span class="meta-icon">👥</span>
+                  {{ formation.nbStudents || 0 }} étudiants
+                </span>
+                <span class="meta-item">
+                  <span class="meta-icon">⭐</span>
+                  {{ formation.averageRating | number:'1.1-1' }}
+                </span>
+                <span class="meta-item">
+                  <span class="meta-icon">⏱️</span>
+                  {{ formation.duration || 0 }}h
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="formation-actions">
+            <button class="btn-icon" title="Modifier" (click)="editFormation(formation.id)">
+              <span>✏️</span>
+            </button>
+            <button class="btn-icon" title="Statistiques" (click)="viewStats(formation.id)">
+              <span>📊</span>
+            </button>
+            <a [routerLink]="['/formations', formation.id]" class="btn-icon" title="Voir">
+              <span>👁️</span>
+            </a>
+            <button class="btn-icon btn-delete" title="Supprimer" (click)="deleteFormation(formation.id)">
+              <span>🗑️</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #noFormations>
+        <div class="empty-state">
+          <div class="empty-icon">📚</div>
+          <h3 class="empty-title">Aucune formation pour le moment</h3>
+          <p class="empty-text">Créez votre première formation et commencez à partager vos connaissances !</p>
+          <button class="btn-primary" routerLink="/formateur/formations/create">
+            Créer ma première formation
+          </button>
+        </div>
+      </ng-template>
+    </section>
+
+    <!-- Activité Récente -->
+    <section class="content-card activity-card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <span class="title-icon">📈</span>
+          Activité Récente
+        </h2>
+      </div>
+
+      <div class="activity-list">
+        <div class="activity-item" *ngFor="let activity of recentActivity">
+          <div class="activity-indicator"></div>
+          <div class="activity-content">
+            <p class="activity-title">
+              <strong>{{ activity.nouveauxInscrits }}</strong> nouveaux inscrits
+            </p>
+            <p class="activity-formation">{{ activity.formation }}</p>
+            <span class="activity-date">{{ activity.date }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Actions Rapides -->
+  <section class="quick-actions">
+    <h2 class="section-title">Actions Rapides</h2>
+    <div class="actions-grid">
+      <button class="action-card" routerLink="/formateur/formations/create">
+        <span class="action-icon">➕</span>
+        <h3 class="action-title">Créer une formation</h3>
+        <p class="action-desc">Ajoutez un nouveau cours</p>
+      </button>
+
+      <button class="action-card" (click)="formations.length > 0 ? viewStats(formations[0].id) : null" [disabled]="formations.length === 0">
+        <span class="action-icon">📊</span>
+        <h3 class="action-title">Voir les statistiques</h3>
+        <p class="action-desc">Analysez vos performances</p>
+      </button>
+
+      <button class="action-card" (click)="formations.length > 0 ? viewStats(formations[0].id) : null" [disabled]="formations.length === 0">
+        <span class="action-icon">👥</span>
+        <h3 class="action-title">Gérer les apprenants</h3>
+        <p class="action-desc">Suivez vos étudiants</p>
+      </button>
+
+      <button class="action-card">
+        <span class="action-icon">💬</span>
+        <h3 class="action-title">Messages</h3>
+        <p class="action-desc">Communiquez avec vos étudiants</p>
+      </button>
+    </div>
+  </section>
+
+  <!-- Loading State -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Chargement de vos données...</p>
+  </div>
+</div>
+
+

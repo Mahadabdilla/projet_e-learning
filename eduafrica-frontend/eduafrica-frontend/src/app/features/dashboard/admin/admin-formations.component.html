@@ -1,0 +1,46 @@
+<div class="admin-formations">
+  <div class="page-header">
+    <h1>📚 Gestion des formations</h1>
+    <p>Gérer toutes les formations de la plateforme</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <p>Chargement...</p>
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <button (click)="loadFormations()" class="btn-primary">Réessayer</button>
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <div *ngIf="formations.length === 0" class="empty-state">
+      <p>Aucune formation trouvée</p>
+    </div>
+
+    <div *ngIf="formations.length > 0" class="formations-grid">
+      <div *ngFor="let formation of formations" class="formation-card">
+        <div class="formation-header">
+          <h3>{{ formation.title }}</h3>
+          <span class="badge" [class.free]="formation.isFree" [class.paid]="!formation.isFree">
+            {{ formation.isFree ? 'Gratuit' : (formation.price | number) + ' FCFA' }}
+          </span>
+        </div>
+        <div class="formation-info">
+          <p><strong>Formateur:</strong> {{ formation.formateur?.firstName }} {{ formation.formateur?.lastName }}</p>
+          <p><strong>Catégorie:</strong> {{ formation.category }}</p>
+          <p><strong>Niveau:</strong> {{ formation.level }}</p>
+          <p><strong>Étudiants:</strong> {{ formation.nbStudents || 0 }}</p>
+          <p><strong>Note:</strong> {{ formation.averageRating || 0 }}/5 ⭐</p>
+        </div>
+        <div class="formation-actions">
+          <a [routerLink]="['/formations', formation.id]" class="btn-view">Voir</a>
+          <button (click)="deleteFormation(formation.id)" class="btn-delete">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

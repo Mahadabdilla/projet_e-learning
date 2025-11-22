@@ -1,0 +1,76 @@
+<div class="notifications-container relative">
+  <button
+    (click)="toggleDropdown()"
+    class="relative p-2 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-full">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+    </svg>
+    <span *ngIf="unreadCount > 0" 
+          class="absolute top-0 right-0 block h-5 w-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+      {{ unreadCount > 9 ? '9+' : unreadCount }}
+    </span>
+  </button>
+
+  <div *ngIf="showDropdown" 
+       class="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg border border-gray-200 z-50 max-h-96 overflow-y-auto">
+    <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+      <h3 class="text-lg font-semibold">Notifications</h3>
+      <div class="flex gap-2">
+        <button
+          *ngIf="hasUnreadNotifications()"
+          (click)="markAllAsRead()"
+          class="text-sm text-blue-600 hover:text-blue-800">
+          Tout marquer comme lu
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="p-4 text-center text-gray-500">
+      Chargement...
+    </div>
+
+    <div *ngIf="!loading && notifications.length === 0" class="p-4 text-center text-gray-500">
+      Aucune notification
+    </div>
+
+    <div *ngIf="!loading && notifications.length > 0" class="divide-y divide-gray-200">
+      <div *ngFor="let notification of notifications"
+           [class.bg-blue-50]="!notification.isRead"
+           class="p-4 hover:bg-gray-50 cursor-pointer transition-colors"
+           (click)="markAsRead(notification)">
+        <div class="flex items-start gap-3">
+          <div class="text-2xl">{{ getNotificationIcon(notification.type) }}</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex-1">
+                <p class="font-semibold text-gray-900" [class.font-bold]="!notification.isRead">
+                  {{ notification.title }}
+                </p>
+                <p *ngIf="notification.message" class="text-sm text-gray-600 mt-1">
+                  {{ notification.message }}
+                </p>
+                <p class="text-xs text-gray-500 mt-2">
+                  {{ formatDate(notification.createdAt) }}
+                </p>
+              </div>
+              <button
+                (click)="deleteNotification(notification.id, $event)"
+                class="text-gray-400 hover:text-red-600 text-sm">
+                ×
+              </button>
+            </div>
+            <a *ngIf="notification.link"
+               [routerLink]="notification.link"
+               (click)="$event.stopPropagation()"
+               class="text-xs text-blue-600 hover:text-blue-800 mt-2 inline-block">
+              Voir plus →
+            </a>
+          </div>
+          <div *ngIf="!notification.isRead" class="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 mt-1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["angular:styles/component:css;189b4b61fdb5160d2334e130ea0b07376c066e6c4f53324082f9858a80e3631d;C:/Users/hp/Downloads/files (5)/eduafrica-frontend/eduafrica-frontend/src/app/app.component.ts"],
+  "sourcesContent": ["\n    :host {\n      display: block;\n      min-height: 100vh;\n    }\n  "],
+  "mappings": ";AACI;AACE,WAAS;AACT,cAAY;AACd;",
+  "names": []
+}

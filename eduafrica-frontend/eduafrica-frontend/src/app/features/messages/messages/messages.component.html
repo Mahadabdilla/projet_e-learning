@@ -1,0 +1,100 @@
+<div class="messages-container">
+  <div class="messages-layout">
+    <!-- Liste des conversations -->
+    <div class="conversations-sidebar">
+      <div class="sidebar-header">
+        <h2>Messages</h2>
+        <span *ngIf="unreadCount > 0" class="unread-badge">{{ unreadCount }}</span>
+      </div>
+
+      <div *ngIf="loading && conversations.length === 0" class="loading">
+        Chargement des conversations...
+      </div>
+
+      <div *ngIf="!loading && conversations.length === 0" class="empty-state">
+        <p>Aucune conversation</p>
+      </div>
+
+      <div class="conversations-list">
+        <div
+          *ngFor="let conversation of conversations"
+          class="conversation-item"
+          [class.active]="selectedConversation?.id === conversation.id"
+          (click)="selectConversation(conversation)">
+          <div class="conversation-avatar">
+            <span>{{ getOtherParticipant(conversation)?.firstName?.charAt(0) }}{{ getOtherParticipant(conversation)?.lastName?.charAt(0) }}</span>
+          </div>
+          <div class="conversation-info">
+            <div class="conversation-header">
+              <h4>{{ getOtherParticipant(conversation)?.firstName }} {{ getOtherParticipant(conversation)?.lastName }}</h4>
+              <span class="conversation-time" *ngIf="conversation.lastMessageAt">
+                {{ formatDate(conversation.lastMessageAt) }}
+              </span>
+            </div>
+            <p class="conversation-preview" *ngIf="conversation.lastMessage">
+              {{ conversation.lastMessage.content.length > 50 ? conversation.lastMessage.content.substring(0, 50) + '...' : conversation.lastMessage.content }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zone de chat -->
+    <div class="chat-area">
+      <div *ngIf="!selectedConversation" class="no-conversation-selected">
+        <div class="empty-chat">
+          <h3>Sélectionnez une conversation</h3>
+          <p>Choisissez une conversation dans la liste pour commencer à discuter</p>
+        </div>
+      </div>
+
+      <div *ngIf="selectedConversation" class="chat-container">
+        <!-- En-tête du chat -->
+        <div class="chat-header">
+          <div class="chat-user-info">
+            <div class="chat-avatar">
+              <span>{{ getOtherParticipant(selectedConversation)?.firstName?.charAt(0) }}{{ getOtherParticipant(selectedConversation)?.lastName?.charAt(0) }}</span>
+            </div>
+            <div>
+              <h3>{{ getOtherParticipant(selectedConversation)?.firstName }} {{ getOtherParticipant(selectedConversation)?.lastName }}</h3>
+              <p class="user-email">{{ getOtherParticipant(selectedConversation)?.email }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Messages -->
+        <div id="messages-container" class="messages-list">
+          <div *ngIf="loading && messages.length === 0" class="loading">
+            Chargement des messages...
+          </div>
+
+          <div
+            *ngFor="let message of messages"
+            class="message-item"
+            [class.sent]="message.sender.id === currentUserId"
+            [class.received]="message.sender.id !== currentUserId">
+            <div class="message-content">
+              <p>{{ message.content }}</p>
+              <span class="message-time">{{ formatDate(message.createdAt) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zone de saisie -->
+        <div class="message-input-area">
+          <form (ngSubmit)="sendMessage()" class="message-form">
+            <textarea
+              [(ngModel)]="newMessageContent"
+              name="messageContent"
+              placeholder="Tapez votre message..."
+              rows="2"
+              class="message-input"></textarea>
+            <button type="submit" [disabled]="!newMessageContent.trim()" class="send-button">
+              Envoyer
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,116 @@
+<div class="admin-overview">
+  <div class="page-header">
+    <h1>📊 Vue d'ensemble</h1>
+    <p>Statistiques et indicateurs de la plateforme</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <p>Chargement des statistiques...</p>
+  </div>
+
+  <div *ngIf="error" class="error-state">
+    <p>{{ error }}</p>
+    <button (click)="loadStats()" class="btn-primary">Réessayer</button>
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <!-- Statistiques principales -->
+    <div class="stats-grid">
+      <div class="stat-card primary">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info">
+          <h3>{{ stats.totalUsers || 0 }}</h3>
+          <p>Total utilisateurs</p>
+          <span class="stat-badge">+{{ getGrowthRate() }}%</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-info">
+          <h3>{{ stats.totalFormations || 0 }}</h3>
+          <p>Formations</p>
+          <span class="stat-badge">{{ getFreeFormationsPercentage() }}% gratuites</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">📝</div>
+        <div class="stat-info">
+          <h3>{{ stats.totalEnrollments || 0 }}</h3>
+          <p>Inscriptions</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">💳</div>
+        <div class="stat-info">
+          <h3>{{ stats.completedPayments || 0 }}</h3>
+          <p>Paiements complétés</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Répartition des utilisateurs -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>Répartition des rôles</h3>
+        <div class="role-distribution">
+          <div class="role-item">
+            <span class="role-color apprenant"></span>
+            <span>Apprenants: {{ stats.apprenants || 0 }}</span>
+          </div>
+          <div class="role-item">
+            <span class="role-color formateur"></span>
+            <span>Formateurs: {{ stats.formateurs || 0 }}</span>
+          </div>
+          <div class="role-item">
+            <span class="role-color mentor"></span>
+            <span>Mentors: {{ stats.mentors || 0 }}</span>
+          </div>
+          <div class="role-item">
+            <span class="role-color admin"></span>
+            <span>Admins: {{ stats.admins || 0 }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h3>Formations</h3>
+        <div class="formation-stats">
+          <div class="stat-row">
+            <span>Gratuites:</span>
+            <strong>{{ stats.freeFormations || 0 }}</strong>
+          </div>
+          <div class="stat-row">
+            <span>Payantes:</span>
+            <strong>{{ stats.paidFormations || 0 }}</strong>
+          </div>
+          <div class="stat-row">
+            <span>Total avis:</span>
+            <strong>{{ stats.totalReviews || 0 }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Indicateurs rapides -->
+    <div class="quick-stats">
+      <div class="quick-stat-card">
+        <h4>🎯 Mentors disponibles</h4>
+        <p class="big-number">{{ stats.availableMentors || 0 }}</p>
+      </div>
+      <div class="quick-stat-card">
+        <h4>📬 Demandes mentorat</h4>
+        <p class="big-number">{{ stats.totalMentoringRequests || 0 }}</p>
+      </div>
+      <div class="quick-stat-card">
+        <h4>⭐ Note moyenne</h4>
+        <p class="big-number">4.5/5</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

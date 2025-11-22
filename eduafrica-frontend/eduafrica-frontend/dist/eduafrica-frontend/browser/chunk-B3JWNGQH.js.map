@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/mentors/mentors.component.ts"],
+  "sourcesContent": ["import { Component } from '@angular/core';\r\nimport { CommonModule } from '@angular/common';\r\n\r\n@Component({\r\n  selector: 'app-mentors',\r\n  standalone: true,\r\n  imports: [CommonModule],\r\n  template: `\r\n    <div class=\"container mx-auto px-4 py-8\">\r\n      <h1 class=\"text-3xl font-bold mb-6\">Nos Mentors</h1>\r\n      <p class=\"text-gray-600\">Découvrez nos mentors experts</p>\r\n    </div>\r\n  `,\r\n  styles: []\r\n})\r\nexport class MentorsComponent {\r\n}\r\n\r\n"],
+  "mappings": ";;;;;;;;;;;AAeM,IAAO,mBAAP,MAAO,kBAAgB;;;uBAAhB,mBAAgB;IAAA;EAAA;;yEAAhB,mBAAgB,WAAA,CAAA,CAAA,aAAA,CAAA,GAAA,YAAA,MAAA,UAAA,CAAA,6BAAA,GAAA,OAAA,GAAA,MAAA,GAAA,QAAA,CAAA,CAAA,GAAA,aAAA,WAAA,QAAA,MAAA,GAAA,CAAA,GAAA,YAAA,aAAA,MAAA,GAAA,CAAA,GAAA,eAAA,CAAA,GAAA,UAAA,SAAA,0BAAA,IAAA,KAAA;AAAA,UAAA,KAAA,GAAA;AAPzB,QAAA,yBAAA,GAAA,OAAA,CAAA,EAAyC,GAAA,MAAA,CAAA;AACH,QAAA,iBAAA,GAAA,aAAA;AAAW,QAAA,uBAAA;AAC/C,QAAA,yBAAA,GAAA,KAAA,CAAA;AAAyB,QAAA,iBAAA,GAAA,kCAAA;AAA6B,QAAA,uBAAA,EAAI;;sBAJpD,YAAY,GAAA,eAAA,EAAA,CAAA;EAAA;;;6EASX,kBAAgB,EAAA,WAAA,oBAAA,UAAA,qDAAA,YAAA,GAAA,CAAA;AAAA,GAAA;",
+  "names": []
+}

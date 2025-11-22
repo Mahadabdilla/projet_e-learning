@@ -1,0 +1,124 @@
+<div class="admin-users">
+  <div class="page-header">
+    <h1>👥 Gestion des utilisateurs</h1>
+    <p>Gérer tous les utilisateurs de la plateforme</p>
+  </div>
+
+  <!-- Filtres et recherche -->
+  <div class="filters-section">
+    <div class="search-box">
+      <input 
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        (input)="onSearchChange()"
+        placeholder="Rechercher par nom, email, pays..."
+        class="search-input">
+    </div>
+    <div class="filter-group">
+      <label>Filtrer par rôle:</label>
+      <select [(ngModel)]="roleFilter" (change)="onRoleFilterChange()" class="filter-select">
+        <option value="ALL">Tous</option>
+        <option value="APPRENANT">Apprenant</option>
+        <option value="FORMATEUR">Formateur</option>
+        <option value="MENTOR">Mentor</option>
+        <option value="ADMIN">Admin</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Tableau -->
+  <div class="table-container">
+    <div *ngIf="loading" class="loading-state">
+      <p>Chargement...</p>
+    </div>
+
+    <div *ngIf="!loading && filteredUsers.length === 0" class="empty-state">
+      <p>Aucun utilisateur trouvé</p>
+    </div>
+
+    <table *ngIf="!loading && filteredUsers.length > 0" class="data-table">
+      <thead>
+        <tr>
+          <th (click)="onSortChange('name')" class="sortable">
+            Nom <span *ngIf="sortBy === 'name'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+          </th>
+          <th (click)="onSortChange('email')" class="sortable">
+            Email <span *ngIf="sortBy === 'email'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+          </th>
+          <th (click)="onSortChange('role')" class="sortable">
+            Rôle <span *ngIf="sortBy === 'role'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+          </th>
+          <th (click)="onSortChange('country')" class="sortable">
+            Pays <span *ngIf="sortBy === 'country'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+          </th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of getPaginatedUsers()">
+          <td>{{ user.firstName }} {{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <span class="role-badge" [class]="'role-' + getRoleColor(user.role)">
+              {{ getRoleLabel(user.role) }}
+            </span>
+          </td>
+          <td>{{ user.country }}</td>
+          <td>
+            <div class="action-buttons">
+              <button (click)="openRoleModal(user)" class="btn-action btn-change">
+                Changer rôle
+              </button>
+              <button (click)="deleteUser(user)" class="btn-action btn-delete">
+                Supprimer
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div *ngIf="!loading && filteredUsers.length > 0" class="pagination">
+      <button (click)="previousPage()" [disabled]="currentPage === 0" class="page-btn">
+        Précédent
+      </button>
+      <span class="page-info">
+        Page {{ currentPage + 1 }} / {{ totalPages }} ({{ totalElements }} utilisateurs)
+      </span>
+      <button (click)="nextPage()" [disabled]="currentPage >= totalPages - 1" class="page-btn">
+        Suivant
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal changement de rôle -->
+  <div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Changer le rôle</h3>
+        <button class="close-btn" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-body" *ngIf="selectedUser">
+        <p><strong>{{ selectedUser.firstName }} {{ selectedUser.lastName }}</strong></p>
+        <p>{{ selectedUser.email }}</p>
+        <div class="form-group">
+          <label>Nouveau rôle:</label>
+          <select [(ngModel)]="newRole" class="form-select">
+            <option value="APPRENANT">Apprenant</option>
+            <option value="FORMATEUR">Formateur</option>
+            <option value="MENTOR">Mentor</option>
+            <option value="ADMIN">Administrateur</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button (click)="closeModal()" class="btn-secondary">Annuler</button>
+        <button (click)="changeUserRole()" class="btn-primary">Confirmer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,38 @@
+<div class="admin-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.collapsed]="!isSidebarOpen">
+    <div class="sidebar-header">
+      <h2>⚙️ Admin</h2>
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <span *ngIf="isSidebarOpen">←</span>
+        <span *ngIf="!isSidebarOpen">→</span>
+      </button>
+    </div>
+    <nav class="sidebar-nav">
+      <a routerLink="/dashboard/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">Vue d'ensemble</span>
+      </a>
+      <a routerLink="/dashboard/admin/users" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">👥</span>
+        <span class="nav-label">Utilisateurs</span>
+      </a>
+      <a routerLink="/dashboard/admin/formations" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">📚</span>
+        <span class="nav-label">Formations</span>
+      </a>
+      <a routerLink="/dashboard/admin/mentors" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">🎯</span>
+        <span class="nav-label">Mentors & Formateurs</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
+
+

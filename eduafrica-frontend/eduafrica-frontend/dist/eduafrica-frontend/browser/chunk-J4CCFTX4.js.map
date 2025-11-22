@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/about/about.component.ts"],
+  "sourcesContent": ["import { Component } from '@angular/core';\r\nimport { CommonModule } from '@angular/common';\r\n\r\n@Component({\r\n  selector: 'app-about',\r\n  standalone: true,\r\n  imports: [CommonModule],\r\n  template: `\r\n    <div class=\"container mx-auto px-4 py-8\">\r\n      <h1 class=\"text-3xl font-bold mb-6\">À propos d'EduAfrica</h1>\r\n      <p class=\"text-gray-600\">Plateforme e-learning pour l'Afrique</p>\r\n    </div>\r\n  `,\r\n  styles: []\r\n})\r\nexport class AboutComponent {\r\n}\r\n\r\n"],
+  "mappings": ";;;;;;;;;;;AAeM,IAAO,iBAAP,MAAO,gBAAc;;;uBAAd,iBAAc;IAAA;EAAA;;yEAAd,iBAAc,WAAA,CAAA,CAAA,WAAA,CAAA,GAAA,YAAA,MAAA,UAAA,CAAA,6BAAA,GAAA,OAAA,GAAA,MAAA,GAAA,QAAA,CAAA,CAAA,GAAA,aAAA,WAAA,QAAA,MAAA,GAAA,CAAA,GAAA,YAAA,aAAA,MAAA,GAAA,CAAA,GAAA,eAAA,CAAA,GAAA,UAAA,SAAA,wBAAA,IAAA,KAAA;AAAA,UAAA,KAAA,GAAA;AAPvB,QAAA,yBAAA,GAAA,OAAA,CAAA,EAAyC,GAAA,MAAA,CAAA;AACH,QAAA,iBAAA,GAAA,yBAAA;AAAoB,QAAA,uBAAA;AACxD,QAAA,yBAAA,GAAA,KAAA,CAAA;AAAyB,QAAA,iBAAA,GAAA,sCAAA;AAAoC,QAAA,uBAAA,EAAI;;sBAJ3D,YAAY,GAAA,eAAA,EAAA,CAAA;EAAA;;;6EASX,gBAAc,EAAA,WAAA,kBAAA,UAAA,iDAAA,YAAA,GAAA,CAAA;AAAA,GAAA;",
+  "names": []
+}

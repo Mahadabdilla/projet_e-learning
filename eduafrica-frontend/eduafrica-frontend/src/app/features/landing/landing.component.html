@@ -1,0 +1,80 @@
+<div class="landing-page">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">Transformez votre carrière en Afrique</h1>
+        <p class="hero-subtitle">
+          Accédez à des formations de qualité, mentorat personnalisé et certifications reconnues.
+          Apprenez à votre rythme, où que vous soyez sur le continent.
+        </p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary" (click)="navigateToFormations()">
+            Commencer maintenant
+          </button>
+          <button class="btn btn-secondary" routerLink="/about">
+            Voir la démo
+          </button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-placeholder">
+          <span style="font-size: 120px;">🎓</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Highlights Section -->
+  <section class="highlights">
+    <div class="container">
+      <div class="highlights-grid">
+        <div class="highlight-card" *ngFor="let highlight of highlights">
+          <div class="highlight-icon">{{ highlight.icon }}</div>
+          <h3 class="highlight-title">{{ highlight.title }}</h3>
+          <p class="highlight-description">{{ highlight.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats">
+    <div class="container">
+      <h2 class="section-title">EduAfrica en chiffres</h2>
+      <div class="stats-grid">
+        <div class="stat-card" *ngFor="let stat of stats">
+          <div class="stat-value">{{ stat.value }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">Fonctionnalités clés</h2>
+      <div class="features-grid">
+        <div class="feature-card" *ngFor="let feature of features">
+          <div class="feature-icon">{{ feature.icon }}</div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container cta-content">
+      <h2 class="cta-title">Prêt à commencer votre parcours ?</h2>
+      <p class="cta-subtitle">
+        Rejoignez des milliers d'apprenants qui développent leurs compétences avec EduAfrica
+      </p>
+      <button class="btn btn-primary btn-large" routerLink="/register">
+        Créer un compte gratuit
+      </button>
+    </div>
+  </section>
+</div>

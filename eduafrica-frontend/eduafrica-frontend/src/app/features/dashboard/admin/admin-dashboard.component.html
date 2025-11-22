@@ -1,0 +1,444 @@
+<div class="dashboard">
+  <div class="dashboard-header">
+    <div class="container">
+      <h1>⚙️ Dashboard Administrateur</h1>
+      <p>Gestion complète de la plateforme EduAfrica</p>
+    </div>
+  </div>
+
+  <div class="container dashboard-content">
+    <!-- Debug Info (temporaire pour débogage) -->
+    <div style="background: #f0f0f0; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; font-size: 0.85rem; font-family: monospace;">
+      <strong>🔍 Debug Info:</strong><br>
+      loading: {{ loading }}<br>
+      error: {{ error ? error : 'Aucune erreur' }}<br>
+      stats existe: {{ stats ? 'OUI' : 'NON' }}<br>
+      <span *ngIf="stats">stats.totalUsers: {{ stats.totalUsers }}<br>
+      stats.apprenants: {{ stats.apprenants }}<br>
+      stats.formateurs: {{ stats.formateurs }}</span>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="error-message">
+      <h3>⚠️ Erreur</h3>
+      <p>{{ error }}</p>
+      <p style="font-size: 0.9rem; margin-top: 0.5rem;">
+        <strong>Conseil :</strong> Vérifiez que vous êtes bien connecté en tant qu'administrateur (admin&#64;eduafrica.com) et que le backend est démarré sur http://localhost:8080
+      </p>
+      <button (click)="loadDashboard()" class="btn-primary" style="margin-top: 1rem;">Réessayer</button>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div *ngIf="loading" class="loading-overlay">
+      <div class="loading-state">
+        <p>⏳ Chargement du dashboard...</p>
+      </div>
+    </div>
+
+    <!-- Dashboard Content - TOUJOURS AFFICHER -->
+    <div>
+      <!-- Statistics -->
+      <div class="stats-grid">
+        <!-- Utilisateurs -->
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-info">
+            <h3>{{ (stats && stats.totalUsers) ? stats.totalUsers : 0 }}</h3>
+            <p>Total utilisateurs</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🎓</div>
+          <div class="stat-info">
+            <h3>{{ (stats && stats.apprenants) ? stats.apprenants : 0 }}</h3>
+            <p>Apprenants</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">👨‍🏫</div>
+          <div class="stat-info">
+            <h3>{{ (stats && stats.formateurs) ? stats.formateurs : 0 }}</h3>
+            <p>Formateurs</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-info">
+            <h3>{{ (stats && stats.mentors) ? stats.mentors : 0 }}</h3>
+            <p>Mentors</p>
+          </div>
+        </div>
+
+        <!-- Formations -->
+        <div class="stat-card">
+          <div class="stat-icon">📚</div>
+          <div class="stat-info">
+            <h3>{{ (stats && stats.totalFormations) ? stats.totalFormations : 0 }}</h3>
+            <p>Total formations</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🆓</div>
+          <div class="stat-info">
+            <h3>{{ (stats && stats.freeFormations) ? stats.freeFormations : 0 }}</h3>
+            <p>Formations gratuites</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-info">
+            <h3>{{ (stats && stats.paidFormations) ? stats.paidFormations : 0 }}</h3>
+            <p>Formations payantes</p>
+          </div>
+        </div>
+
+        <!-- Inscriptions et Paiements -->
+        <div class="stat-card">
+          <div class="stat-icon">📝</div>
+          <div class="stat-info">
+            <h3>{{ (stats && stats.totalEnrollments) ? stats.totalEnrollments : 0 }}</h3>
+            <p>Total inscriptions</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💳</div>
+          <div class="stat-info">
+            <h3>{{ (stats && stats.completedPayments) ? stats.completedPayments : 0 }}</h3>
+            <p>Paiements complétés</p>
+          </div>
+        </div>
+
+        <!-- Mentorat -->
+        <div class="stat-card">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-info">
+            <h3>{{ (stats && stats.availableMentors) ? stats.availableMentors : 0 }}</h3>
+            <p>Mentors disponibles</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📬</div>
+          <div class="stat-info">
+            <h3>{{ (stats && stats.totalMentoringRequests) ? stats.totalMentoringRequests : 0 }}</h3>
+            <p>Demandes de mentorat</p>
+          </div>
+        </div>
+
+        <!-- Avis -->
+        <div class="stat-card">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-info">
+            <h3>{{ (stats && stats.totalReviews) ? stats.totalReviews : 0 }}</h3>
+            <p>Total avis</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Onglets de navigation -->
+      <div class="tabs-container">
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab === 'users'"
+          (click)="switchTab('users')">
+          👥 Utilisateurs
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab === 'formations'"
+          (click)="switchTab('formations')">
+          📚 Formations
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab === 'payments'"
+          (click)="switchTab('payments')">
+          💳 Paiements
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab === 'reviews'"
+          (click)="switchTab('reviews')">
+          ⭐ Avis
+        </button>
+      </div>
+
+      <!-- Onglet Utilisateurs -->
+      <div *ngIf="activeTab === 'users'" class="section">
+        <div class="section-header">
+          <h2>Gestion des utilisateurs</h2>
+          <button
+            (click)="loadUsers()"
+            class="btn-primary">
+            {{ showUsersList ? 'Masquer' : 'Afficher' }} la liste
+          </button>
+        </div>
+
+        <div *ngIf="showUsersList">
+          <!-- Barre de recherche et filtres -->
+          <div class="filters-bar">
+            <div class="search-box">
+              <input 
+                type="text" 
+                [(ngModel)]="searchTerm" 
+                (input)="onSearchChange()"
+                placeholder="Rechercher par nom, email, pays..."
+                class="search-input">
+            </div>
+            <div class="filter-group">
+              <label>Filtrer par rôle:</label>
+              <select [(ngModel)]="roleFilter" (change)="onRoleFilterChange()" class="filter-select">
+                <option value="ALL">Tous</option>
+                <option value="APPRENANT">Apprenant</option>
+                <option value="FORMATEUR">Formateur</option>
+                <option value="MENTOR">Mentor</option>
+                <option value="ADMIN">Admin</option>
+              </select>
+            </div>
+          </div>
+
+          <div *ngIf="loading" class="loading-state">
+            <p>Chargement des utilisateurs...</p>
+          </div>
+
+          <div *ngIf="!loading && filteredUsers.length === 0" class="empty-state">
+            <p>Aucun utilisateur trouvé</p>
+          </div>
+
+          <div *ngIf="!loading && filteredUsers.length > 0" class="users-table">
+            <table>
+              <thead>
+                <tr>
+                  <th (click)="onSortChange('name')" class="sortable">
+                    Nom 
+                    <span *ngIf="sortBy === 'name'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+                  </th>
+                  <th (click)="onSortChange('email')" class="sortable">
+                    Email 
+                    <span *ngIf="sortBy === 'email'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+                  </th>
+                  <th (click)="onSortChange('role')" class="sortable">
+                    Rôle 
+                    <span *ngIf="sortBy === 'role'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+                  </th>
+                  <th (click)="onSortChange('country')" class="sortable">
+                    Pays 
+                    <span *ngIf="sortBy === 'country'">{{ sortOrder === 'asc' ? '↑' : '↓' }}</span>
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of filteredUsers">
+                  <td>{{ user.firstName }} {{ user.lastName }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>
+                    <span [class]="'role-badge ' + getRoleColor(user.role)">
+                      {{ getRoleLabel(user.role) }}
+                    </span>
+                  </td>
+                  <td>{{ user.country }}</td>
+                  <td>
+                    <div class="action-buttons">
+                      <button
+                        (click)="viewUserDetails(user)"
+                        class="btn-action btn-view">
+                        Détails
+                      </button>
+                      <button
+                        (click)="selectUserForRoleChange(user)"
+                        class="btn-action btn-change-role">
+                        Changer rôle
+                      </button>
+                      <button
+                        (click)="deleteUser(user)"
+                        class="btn-action btn-delete">
+                        Supprimer
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="results-count">{{ filteredUsers.length }} utilisateur(s) trouvé(s) sur {{ users.length }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Onglet Formations -->
+      <div *ngIf="activeTab === 'formations'" class="section">
+        <div class="section-header">
+          <h2>Gestion des formations</h2>
+          <button
+            (click)="loadFormations()"
+            class="btn-primary">
+            {{ showFormationsList ? 'Masquer' : 'Afficher' }} la liste
+          </button>
+        </div>
+
+        <div *ngIf="showFormationsList">
+          <div *ngIf="loading" class="loading-state">
+            <p>Chargement des formations...</p>
+          </div>
+
+          <div *ngIf="!loading && formations.length === 0" class="empty-state">
+            <p>Aucune formation trouvée</p>
+          </div>
+
+          <div *ngIf="!loading && formations.length > 0" class="formations-grid">
+            <div *ngFor="let formation of formations" class="formation-card">
+              <h3>{{ formation.title }}</h3>
+              <p><strong>Formateur:</strong> {{ formation.formateur?.firstName }} {{ formation.formateur?.lastName }}</p>
+              <p><strong>Catégorie:</strong> {{ formation.category }}</p>
+              <p><strong>Prix:</strong> {{ formation.isFree ? 'Gratuit' : (formation.price | number) + ' FCFA' }}</p>
+              <p><strong>Étudiants:</strong> {{ formation.nbStudents || 0 }}</p>
+              <p><strong>Note:</strong> {{ formation.averageRating || 0 }}/5</p>
+              <div class="action-buttons">
+                <button
+                  (click)="deleteFormation(formation.id)"
+                  class="btn-action btn-delete">
+                  Supprimer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Onglet Paiements -->
+      <div *ngIf="activeTab === 'payments'" class="section">
+        <div class="section-header">
+          <h2>Gestion des paiements</h2>
+          <button
+            (click)="loadPayments()"
+            class="btn-primary">
+            {{ showPaymentsList ? 'Masquer' : 'Afficher' }} la liste
+          </button>
+        </div>
+
+        <div *ngIf="showPaymentsList">
+          <div *ngIf="loading" class="loading-state">
+            <p>Chargement des paiements...</p>
+          </div>
+
+          <div *ngIf="!loading && payments.length === 0" class="empty-state">
+            <p>Aucun paiement trouvé</p>
+          </div>
+
+          <div *ngIf="!loading && payments.length > 0" class="payments-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Utilisateur</th>
+                  <th>Formation</th>
+                  <th>Montant</th>
+                  <th>Méthode</th>
+                  <th>Statut</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let payment of payments">
+                  <td>{{ payment.user?.firstName }} {{ payment.user?.lastName }}</td>
+                  <td>{{ payment.formation?.title }}</td>
+                  <td>{{ payment.amount | number }} FCFA</td>
+                  <td>{{ payment.paymentMethod }}</td>
+                  <td>
+                    <span [class]="'status-badge status-' + payment.status?.toLowerCase()">
+                      {{ payment.status }}
+                    </span>
+                  </td>
+                  <td>{{ payment.createdAt | date:'short' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Onglet Avis -->
+      <div *ngIf="activeTab === 'reviews'" class="section">
+        <div class="section-header">
+          <h2>Gestion des avis</h2>
+          <button
+            (click)="loadReviews()"
+            class="btn-primary">
+            {{ showReviewsList ? 'Masquer' : 'Afficher' }} la liste
+          </button>
+        </div>
+
+        <div *ngIf="showReviewsList">
+          <div *ngIf="loading" class="loading-state">
+            <p>Chargement des avis...</p>
+          </div>
+
+          <div *ngIf="!loading && reviews.length === 0" class="empty-state">
+            <p>Aucun avis trouvé</p>
+          </div>
+
+          <div *ngIf="!loading && reviews.length > 0" class="reviews-list">
+            <div *ngFor="let review of reviews" class="review-card">
+              <div class="review-header">
+                <div>
+                  <strong>{{ review.user?.firstName }} {{ review.user?.lastName }}</strong>
+                  <span class="review-rating">⭐ {{ review.rating }}/5</span>
+                </div>
+                <span class="review-date">{{ review.createdAt | date:'short' }}</span>
+              </div>
+              <p class="review-formation">Formation: {{ review.formation?.title }}</p>
+              <p class="review-comment">{{ review.comment }}</p>
+              <div class="action-buttons">
+                <button
+                  (click)="deleteReview(review.id)"
+                  class="btn-action btn-delete">
+                  Supprimer
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal pour voir/modifier un utilisateur -->
+      <div *ngIf="selectedUser" class="modal-overlay" (click)="closeUserDetails()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <div class="modal-header">
+            <h3>Détails de l'utilisateur</h3>
+            <button class="close-button" (click)="closeUserDetails()">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="user-details">
+              <p><strong>Nom complet:</strong> {{ selectedUser.firstName }} {{ selectedUser.lastName }}</p>
+              <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+              <p><strong>Téléphone:</strong> {{ selectedUser.phone }}</p>
+              <p><strong>Pays:</strong> {{ selectedUser.country }}</p>
+              <p><strong>Rôle actuel:</strong> 
+                <span [class]="'role-badge ' + getRoleColor(selectedUser.role)">
+                  {{ getRoleLabel(selectedUser.role) }}
+                </span>
+              </p>
+            </div>
+            <div class="form-group">
+              <label>Changer le rôle</label>
+              <select [(ngModel)]="newRole" class="form-select">
+                <option value="APPRENANT">Apprenant</option>
+                <option value="FORMATEUR">Formateur</option>
+                <option value="MENTOR">Mentor</option>
+                <option value="ADMIN">Administrateur</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button (click)="closeUserDetails()" class="btn-secondary">Fermer</button>
+            <button 
+              (click)="changeUserRole(selectedUser)" 
+              class="btn-primary"
+              [disabled]="newRole === selectedUser.role">
+              Confirmer le changement
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/formations/formation-detail.component.ts"],
+  "sourcesContent": ["import { Component } from '@angular/core';\r\nimport { CommonModule } from '@angular/common';\r\nimport { RouterLink } from '@angular/router';\r\n\r\n@Component({\r\n  selector: 'app-formation-detail',\r\n  standalone: true,\r\n  imports: [CommonModule, RouterLink],\r\n  template: `\r\n    <div class=\"container mx-auto px-4 py-8\">\r\n      <h1 class=\"text-3xl font-bold mb-6\">Détail de la formation</h1>\r\n      <p>Page en construction...</p>\r\n    </div>\r\n  `,\r\n  styles: []\r\n})\r\nexport class FormationDetailComponent {\r\n}\r\n\r\n"],
+  "mappings": ";;;;;;;;;;;;AAgBM,IAAO,2BAAP,MAAO,0BAAwB;;;uBAAxB,2BAAwB;IAAA;EAAA;;yEAAxB,2BAAwB,WAAA,CAAA,CAAA,sBAAA,CAAA,GAAA,YAAA,MAAA,UAAA,CAAA,6BAAA,GAAA,OAAA,GAAA,MAAA,GAAA,QAAA,CAAA,CAAA,GAAA,aAAA,WAAA,QAAA,MAAA,GAAA,CAAA,GAAA,YAAA,aAAA,MAAA,CAAA,GAAA,UAAA,SAAA,kCAAA,IAAA,KAAA;AAAA,UAAA,KAAA,GAAA;AAPjC,QAAA,yBAAA,GAAA,OAAA,CAAA,EAAyC,GAAA,MAAA,CAAA;AACH,QAAA,iBAAA,GAAA,2BAAA;AAAsB,QAAA,uBAAA;AAC1D,QAAA,yBAAA,GAAA,GAAA;AAAG,QAAA,iBAAA,GAAA,yBAAA;AAAuB,QAAA,uBAAA,EAAI;;sBAJxB,YAAY,GAAA,eAAA,EAAA,CAAA;EAAA;;;6EASX,0BAAwB,EAAA,WAAA,4BAAA,UAAA,iEAAA,YAAA,GAAA,CAAA;AAAA,GAAA;",
+  "names": []
+}

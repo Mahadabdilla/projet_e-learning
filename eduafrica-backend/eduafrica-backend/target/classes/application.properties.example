@@ -1,0 +1,80 @@
+# Server Configuration
+server.port=8080
+
+# Database Configuration (PostgreSQL)
+spring.datasource.url=jdbc:postgresql://localhost:5433/eduafrica
+spring.datasource.username=eduafrica
+spring.datasource.password=EduAfrica1234
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# JPA Configuration
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+# JWT Configuration
+jwt.secret=eduafrica2024SecretKeyForJWTTokenGenerationAndValidation123456789
+jwt.expiration=86400000
+
+# Logging
+logging.level.com.eduafrica=DEBUG
+logging.level.org.springframework.security=DEBUG
+
+# File Upload Configuration
+file.upload-dir=uploads
+spring.servlet.multipart.max-file-size=100MB
+spring.servlet.multipart.max-request-size=100MB
+
+# Mobile Money Configuration - Wave
+# Obtenir sur https://wave.com/
+wave.api.key=${WAVE_API_KEY:}
+wave.api.secret=${WAVE_API_SECRET:}
+wave.api.url=https://api.wave.com/v1
+wave.sandbox=true
+
+# Mobile Money Configuration - Orange Money
+# Contacter Orange pour obtenir les credentials
+orange.money.merchant.key=${ORANGE_MONEY_MERCHANT_KEY:}
+orange.money.api.url=https://api.orange.com/orange-money-webpay
+orange.money.sandbox=true
+
+# Mobile Money Configuration - M-Pesa
+# Obtenir sur https://developer.safaricom.co.ke/
+mpesa.consumer.key=${MPESA_CONSUMER_KEY:}
+mpesa.consumer.secret=${MPESA_CONSUMER_SECRET:}
+mpesa.api.url=https://sandbox.safaricom.co.ke
+mpesa.shortcode=${MPESA_SHORTCODE:}
+mpesa.passkey=${MPESA_PASSKEY:}
+mpesa.sandbox=true
+
+# Blockchain Configuration
+blockchain.network=local
+blockchain.contract.address=${BLOCKCHAIN_CONTRACT_ADDRESS:}
+
+# Swagger/OpenAPI Configuration
+springdoc.api-docs.path=/api-docs
+springdoc.swagger-ui.path=/swagger-ui.html
+springdoc.swagger-ui.operationsSorter=method
+springdoc.swagger-ui.tagsSorter=alpha
+springdoc.swagger-ui.tryItOutEnabled=true
+
+# Storage Configuration
+# Options: local, firebase, s3
+storage.provider=${STORAGE_PROVIDER:local}
+storage.enabled=${STORAGE_ENABLED:false}
+
+# Firebase Storage Configuration
+# Créer un projet sur https://console.firebase.google.com/
+firebase.storage.bucket=${FIREBASE_STORAGE_BUCKET:}
+firebase.storage.credentials.path=${FIREBASE_CREDENTIALS_PATH:}
+firebase.storage.enabled=${FIREBASE_STORAGE_ENABLED:false}
+
+# AWS S3 Configuration
+# Créer un bucket sur https://console.aws.amazon.com/s3/
+aws.s3.bucket=${AWS_S3_BUCKET:}
+aws.s3.region=${AWS_S3_REGION:us-east-1}
+aws.s3.access-key=${AWS_ACCESS_KEY:}
+aws.s3.secret-key=${AWS_SECRET_KEY:}
+aws.s3.enabled=${AWS_S3_ENABLED:false}
+

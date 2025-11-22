@@ -1,0 +1,81 @@
+<div class="admin-mentors">
+  <div class="page-header">
+    <h1>🎯 Mentors & Formateurs</h1>
+    <p>Gérer les mentors et formateurs de la plateforme</p>
+  </div>
+
+  <div class="tabs">
+    <button [class.active]="activeTab === 'mentors'" (click)="activeTab = 'mentors'" class="tab-btn">
+      Mentors
+    </button>
+    <button [class.active]="activeTab === 'formateurs'" (click)="activeTab = 'formateurs'" class="tab-btn">
+      Formateurs
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <p>Chargement...</p>
+  </div>
+
+  <!-- Onglet Mentors -->
+  <div *ngIf="!loading && activeTab === 'mentors'">
+    <div *ngIf="mentors.length === 0" class="empty-state">
+      <p>Aucun mentor trouvé</p>
+    </div>
+
+    <div *ngIf="mentors.length > 0" class="mentors-grid">
+      <div *ngFor="let mentor of mentors" class="mentor-card">
+        <div class="mentor-header">
+          <h3>{{ mentor.user?.firstName }} {{ mentor.user?.lastName }}</h3>
+          <span class="status-badge" [class.available]="mentor.isAvailable" [class.unavailable]="!mentor.isAvailable">
+            {{ mentor.isAvailable ? 'Disponible' : 'Indisponible' }}
+          </span>
+        </div>
+        <div class="mentor-info">
+          <p><strong>Spécialité:</strong> {{ mentor.specialty }}</p>
+          <p><strong>Note:</strong> {{ mentor.rating || 0 }}/5 ⭐</p>
+          <p><strong>Sessions:</strong> {{ mentor.nbSessions || 0 }}</p>
+          <p><strong>Tarif:</strong> {{ mentor.hourlyRate || 0 }} FCFA/h</p>
+        </div>
+        <div class="mentor-actions">
+          <button (click)="toggleMentorAvailability(mentor)" class="btn-toggle">
+            {{ mentor.isAvailable ? 'Rendre indisponible' : 'Rendre disponible' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Onglet Formateurs -->
+  <div *ngIf="!loading && activeTab === 'formateurs'">
+    <div *ngIf="formateurs.length === 0" class="empty-state">
+      <p>Aucun formateur trouvé</p>
+    </div>
+
+    <div *ngIf="formateurs.length > 0" class="formateurs-table">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Pays</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let formateur of formateurs">
+            <td>{{ formateur.firstName }} {{ formateur.lastName }}</td>
+            <td>{{ formateur.email }}</td>
+            <td>{{ formateur.country }}</td>
+            <td>
+              <button class="btn-action">Voir formations</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+

@@ -1,0 +1,191 @@
+<div class="create-formation-container">
+  <div class="form-header">
+    <h1>{{ isEditMode ? 'Modifier la formation' : 'Créer une nouvelle formation' }}</h1>
+    <button class="btn-cancel" (click)="cancel()">Annuler</button>
+  </div>
+
+  <form (ngSubmit)="onSubmit()" class="formation-form" #formationForm="ngForm">
+    <!-- Error Message -->
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <!-- Title -->
+    <div class="form-group">
+      <label for="title">Titre de la formation *</label>
+      <input
+        type="text"
+        id="title"
+        [(ngModel)]="formation.title"
+        name="title"
+        placeholder="Ex: Développement Web Full-Stack avec React et Node.js"
+        required
+        maxlength="500"
+        class="form-input"
+      />
+      <small class="form-hint">Maximum 500 caractères</small>
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+      <label for="description">Description *</label>
+      <textarea
+        id="description"
+        [(ngModel)]="formation.description"
+        name="description"
+        rows="4"
+        placeholder="Décrivez votre formation en détail..."
+        required
+        class="form-textarea"
+      ></textarea>
+    </div>
+
+    <!-- Programme -->
+    <div class="form-group">
+      <label for="programme">Programme de la formation</label>
+      <textarea
+        id="programme"
+        [(ngModel)]="formation.programme"
+        name="programme"
+        rows="6"
+        placeholder="Module 1: Introduction&#10;Module 2: Concepts de base&#10;..."
+        class="form-textarea"
+      ></textarea>
+    </div>
+
+    <!-- Category and Level -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="category">Catégorie *</label>
+        <select
+          id="category"
+          [(ngModel)]="formation.category"
+          name="category"
+          required
+          class="form-select"
+        >
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="level">Niveau *</label>
+        <select
+          id="level"
+          [(ngModel)]="formation.level"
+          name="level"
+          required
+          class="form-select"
+        >
+          <option *ngFor="let level of levels" [value]="level">{{ level }}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Duration and Price -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="duration">Durée (en heures) *</label>
+        <input
+          type="number"
+          id="duration"
+          [(ngModel)]="formation.duration"
+          name="duration"
+          min="1"
+          required
+          class="form-input"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="price">Prix (FCFA)</label>
+        <input
+          type="number"
+          id="price"
+          [(ngModel)]="formation.price"
+          name="price"
+          min="0"
+          [disabled]="formation.isFree || false"
+          class="form-input"
+        />
+      </div>
+    </div>
+
+    <!-- Free Checkbox -->
+    <div class="form-group checkbox-group">
+      <label class="checkbox-label">
+        <input
+          type="checkbox"
+          [(ngModel)]="formation.isFree"
+          name="isFree"
+          (change)="onFreeChange()"
+          class="checkbox-input"
+        />
+        <span>Formation gratuite</span>
+      </label>
+    </div>
+
+    <!-- Image Upload -->
+    <div class="form-group">
+      <label>Image de la formation</label>
+      <app-file-upload
+        fileType="IMAGE"
+        [maxSizeMB]="5"
+        [accept]="'image/*'"
+        (fileUploaded)="onImageUploaded($event)"
+        (uploadError)="onUploadError($event)">
+      </app-file-upload>
+      <small class="form-hint">Ou entrez une URL d'image ci-dessous</small>
+    </div>
+
+    <!-- Image URL (alternative) -->
+    <div class="form-group">
+      <label for="imageUrl">URL de l'image (alternative)</label>
+      <input
+        type="url"
+        id="imageUrl"
+        [(ngModel)]="formation.imageUrl"
+        name="imageUrl"
+        placeholder="https://example.com/image.jpg"
+        maxlength="1000"
+        class="form-input"
+      />
+      <small class="form-hint">Maximum 1000 caractères</small>
+    </div>
+
+    <!-- Tags -->
+    <div class="form-group">
+      <label>Tags</label>
+      <div class="tags-input">
+        <input
+          type="text"
+          [(ngModel)]="newTag"
+          (keyup.enter)="addTag()"
+          placeholder="Ajouter un tag et appuyer sur Entrée"
+          class="form-input tag-input"
+        />
+        <button type="button" (click)="addTag()" class="btn-add-tag">Ajouter</button>
+      </div>
+      <div class="tags-list" *ngIf="formation.tags && formation.tags.length > 0">
+        <span *ngFor="let tag of formation.tags" class="tag">
+          {{ tag }}
+          <button type="button" (click)="removeTag(tag)" class="tag-remove">×</button>
+        </span>
+      </div>
+    </div>
+
+    <!-- Submit Buttons -->
+    <div class="form-actions">
+      <button type="button" (click)="cancel()" class="btn-secondary">Annuler</button>
+      <button 
+        type="submit" 
+        [disabled]="isLoading || !formationForm.valid" 
+        class="btn-primary"
+        (click)="$event.preventDefault(); onSubmit($event)">
+        <span *ngIf="isLoading">Enregistrement...</span>
+        <span *ngIf="!isLoading">{{ isEditMode ? 'Mettre à jour' : 'Créer la formation' }}</span>
+      </button>
+    </div>
+  </form>
+</div>
+

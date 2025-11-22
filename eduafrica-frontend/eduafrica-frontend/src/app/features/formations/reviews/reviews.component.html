@@ -1,0 +1,50 @@
+<div class="reviews-section">
+  <h2 class="text-2xl font-bold mb-4">Avis des apprenants</h2>
+  
+  <div *ngIf="loading" class="text-center py-4">
+    <p class="text-gray-500">Chargement des avis...</p>
+  </div>
+  
+  <div *ngIf="errorMessage" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+    <p class="text-red-800">{{ errorMessage }}</p>
+  </div>
+  
+  <div *ngIf="!loading && reviews.length === 0" class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-4">
+    <p class="text-gray-600">Aucun avis pour le moment. Soyez le premier à laisser un avis !</p>
+  </div>
+  
+  <div *ngIf="!loading && reviews.length > 0" class="space-y-4">
+    <div *ngFor="let review of reviews" class="bg-white border border-gray-200 rounded-lg p-4">
+      <div class="flex items-start justify-between mb-2">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
+            {{ review.user.firstName.charAt(0) }}{{ review.user.lastName.charAt(0) }}
+          </div>
+          <div>
+            <p class="font-semibold">{{ review.user.firstName }} {{ review.user.lastName }}</p>
+            <div class="flex items-center gap-1 text-yellow-500 text-sm">
+              <span *ngFor="let star of getStars(review.rating)">{{ star }}</span>
+              <span class="text-gray-600 ml-2">({{ review.rating }}/5)</span>
+            </div>
+          </div>
+        </div>
+        <div class="text-sm text-gray-500">
+          {{ review.createdAt | date:'dd/MM/yyyy' }}
+        </div>
+      </div>
+      
+      <p *ngIf="review.comment" class="text-gray-700 mt-2">{{ review.comment }}</p>
+      
+      <div *ngIf="isMyReview(review)" class="mt-3 flex justify-end">
+        <button 
+          (click)="deleteReview(review.id)"
+          class="text-red-600 hover:text-red-800 text-sm">
+          Supprimer mon avis
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

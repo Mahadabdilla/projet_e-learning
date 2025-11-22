@@ -1,0 +1,66 @@
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-content">
+      <a routerLink="/" class="logo">
+        <span class="logo-icon">🎓</span>
+        <span class="logo-text">EduAfrica</span>
+      </a>
+
+      <button class="mobile-menu-btn" (click)="toggleMenu()">
+        <span class="menu-icon">☰</span>
+      </button>
+
+      <div class="nav-links" [class.active]="isMenuOpen">
+        <a routerLink="/formations" routerLinkActive="active" (click)="isMenuOpen = false">
+          Formations
+        </a>
+        <a routerLink="/mentors" routerLinkActive="active" (click)="isMenuOpen = false">
+          Mentors
+        </a>
+        <a routerLink="/about" routerLinkActive="active" (click)="isMenuOpen = false">
+          À propos
+        </a>
+        <a routerLink="/contact" routerLinkActive="active" (click)="isMenuOpen = false">
+          Contact
+        </a>
+
+        <div class="nav-actions" *ngIf="!currentUser">
+          <a routerLink="/login" class="btn btn-outline" (click)="isMenuOpen = false">
+            Se connecter
+          </a>
+          <a routerLink="/register" class="btn btn-primary" (click)="isMenuOpen = false">
+            S'inscrire
+          </a>
+        </div>
+
+        <div class="nav-user" *ngIf="currentUser">
+          <a [routerLink]="getDashboardRoute()" class="btn btn-outline" (click)="isMenuOpen = false">
+            📊 Dashboard
+          </a>
+          <app-notifications></app-notifications>
+          <div class="user-menu">
+            <button class="user-btn">
+              <span class="user-avatar">{{ currentUser.firstName.charAt(0) }}{{ currentUser.lastName.charAt(0) }}</span>
+              <span class="user-name">{{ currentUser.firstName }}</span>
+            </button>
+            <div class="user-dropdown">
+              <div class="user-info">
+                <strong>{{ currentUser.firstName }} {{ currentUser.lastName }}</strong>
+                <span class="user-role">{{ currentUser.role }}</span>
+              </div>
+              <a [routerLink]="getDashboardRoute()" class="dropdown-item">
+                📊 Mon Dashboard
+              </a>
+              <a routerLink="/profile" class="dropdown-item">
+                👤 Mon Profil
+              </a>
+              <button class="dropdown-item logout" (click)="logout()">
+                🚪 Déconnexion
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

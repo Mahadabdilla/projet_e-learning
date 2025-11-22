@@ -1,0 +1,62 @@
+<div class="request-modal-overlay" (click)="cancel()">
+  <div class="request-modal" (click)="$event.stopPropagation()">
+    <div class="request-header">
+      <h2>Demander un mentor</h2>
+      <button class="close-btn" (click)="cancel()">×</button>
+    </div>
+
+    <div class="request-content" *ngIf="mentor">
+      <!-- Mentor Info -->
+      <div class="mentor-summary">
+        <div class="mentor-avatar">
+          <span>{{ mentor.user?.firstName?.charAt(0) }}{{ mentor.user?.lastName?.charAt(0) }}</span>
+        </div>
+        <div class="mentor-info">
+          <h3>{{ mentor.user?.firstName }} {{ mentor.user?.lastName }}</h3>
+          <p class="mentor-specialty">{{ mentor.specialty }}</p>
+          <p class="mentor-rate">{{ mentor.hourlyRate | number }} FCFA/heure</p>
+        </div>
+      </div>
+
+      <!-- Success Message -->
+      <div *ngIf="success" class="success-message">
+        <div class="success-icon">✅</div>
+        <h3>Demande envoyée !</h3>
+        <p>Votre demande de mentorat a été envoyée. Le mentor vous répondra bientôt.</p>
+      </div>
+
+      <!-- Request Form -->
+      <div *ngIf="!success" class="request-form">
+        <div class="form-group">
+          <label for="message">Message pour le mentor *</label>
+          <textarea
+            id="message"
+            [(ngModel)]="message"
+            rows="6"
+            placeholder="Décrivez vos besoins, vos objectifs d'apprentissage, ou posez vos questions..."
+            class="form-textarea"
+          ></textarea>
+          <small class="form-hint">Expliquez pourquoi vous souhaitez ce mentor et ce que vous attendez de lui.</small>
+        </div>
+
+        <div *ngIf="error" class="error-message">
+          {{ error }}
+        </div>
+
+        <div class="request-actions">
+          <button type="button" class="btn-cancel" (click)="cancel()">Annuler</button>
+          <button 
+            type="button" 
+            class="btn-submit" 
+            (click)="submitRequest()"
+            [disabled]="isLoading || !message.trim()">
+            <span *ngIf="isLoading" class="spinner"></span>
+            {{ isLoading ? 'Envoi...' : 'Envoyer la demande' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

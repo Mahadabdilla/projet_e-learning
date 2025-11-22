@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/dashboard/admin/admin-dashboard.component.ts"],
+  "sourcesContent": ["import { Component } from '@angular/core';\r\nimport { CommonModule } from '@angular/common';\r\n\r\n@Component({\r\n  selector: 'app-admin-dashboard',\r\n  standalone: true,\r\n  imports: [CommonModule],\r\n  template: `\r\n    <div class=\"container mx-auto px-4 py-8\">\r\n      <h1 class=\"text-3xl font-bold mb-6\">Dashboard Administrateur</h1>\r\n      <p class=\"text-gray-600\">Gestion de la plateforme</p>\r\n    </div>\r\n  `,\r\n  styles: []\r\n})\r\nexport class AdminDashboardComponent {\r\n}\r\n\r\n"],
+  "mappings": ";;;;;;;;;;;AAeM,IAAO,0BAAP,MAAO,yBAAuB;;;uBAAvB,0BAAuB;IAAA;EAAA;;yEAAvB,0BAAuB,WAAA,CAAA,CAAA,qBAAA,CAAA,GAAA,YAAA,MAAA,UAAA,CAAA,6BAAA,GAAA,OAAA,GAAA,MAAA,GAAA,QAAA,CAAA,CAAA,GAAA,aAAA,WAAA,QAAA,MAAA,GAAA,CAAA,GAAA,YAAA,aAAA,MAAA,GAAA,CAAA,GAAA,eAAA,CAAA,GAAA,UAAA,SAAA,iCAAA,IAAA,KAAA;AAAA,UAAA,KAAA,GAAA;AAPhC,QAAA,yBAAA,GAAA,OAAA,CAAA,EAAyC,GAAA,MAAA,CAAA;AACH,QAAA,iBAAA,GAAA,0BAAA;AAAwB,QAAA,uBAAA;AAC5D,QAAA,yBAAA,GAAA,KAAA,CAAA;AAAyB,QAAA,iBAAA,GAAA,0BAAA;AAAwB,QAAA,uBAAA,EAAI;;sBAJ/C,YAAY,GAAA,eAAA,EAAA,CAAA;EAAA;;;6EASX,yBAAuB,EAAA,WAAA,2BAAA,UAAA,sEAAA,YAAA,GAAA,CAAA;AAAA,GAAA;",
+  "names": []
+}

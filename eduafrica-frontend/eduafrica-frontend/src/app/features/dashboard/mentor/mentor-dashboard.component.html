@@ -1,0 +1,199 @@
+<div class="dashboard">
+  <div class="dashboard-header">
+    <div class="container">
+      <h1>🎯 Espace Mentor</h1>
+      <p>Accompagnez vos mentees vers la réussite</p>
+    </div>
+  </div>
+
+  <div class="container dashboard-content">
+    <!-- Error Message -->
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading && !stats" class="loading-state">
+      <p>Chargement du dashboard...</p>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div *ngIf="stats && !loading">
+      <!-- Disponibilité -->
+      <div class="availability-section">
+        <div class="availability-card">
+          <div class="availability-info">
+            <h3>Statut de disponibilité</h3>
+            <p *ngIf="stats.mentorProfile.isAvailable" class="status-available">
+              ✅ Disponible
+            </p>
+            <p *ngIf="!stats.mentorProfile.isAvailable" class="status-unavailable">
+              ❌ Non disponible
+            </p>
+          </div>
+          <button
+            (click)="toggleAvailability()"
+            [disabled]="isUpdatingAvailability"
+            class="btn-toggle-availability">
+            <span *ngIf="isUpdatingAvailability">Mise à jour...</span>
+            <span *ngIf="!isUpdatingAvailability">
+              {{ stats.mentorProfile.isAvailable ? 'Se rendre indisponible' : 'Se rendre disponible' }}
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-info">
+            <h3>{{ stats.uniqueMentees || 0 }}</h3>
+            <p>Mentees actifs</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📬</div>
+          <div class="stat-info">
+            <h3>{{ stats.pendingRequests || 0 }}</h3>
+            <p>Demandes en attente</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-info">
+            <h3>{{ stats.completedSessions || 0 }}</h3>
+            <p>Séances complétées</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-info">
+            <h3>{{ (stats.averageRating || 0).toFixed(1) }}</h3>
+            <p>Note moyenne</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-info">
+            <h3>{{ (stats.estimatedRevenue || 0).toFixed(0) }} FCFA</h3>
+            <p>Revenus estimés</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📊</div>
+          <div class="stat-info">
+            <h3>{{ stats.totalRequests || 0 }}</h3>
+            <p>Total demandes</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demandes de mentorat -->
+      <div class="section">
+        <h2>Demandes de mentorat</h2>
+
+        <!-- Demandes en attente -->
+        <div *ngIf="getPendingRequests().length > 0" class="requests-section">
+          <h3 class="section-subtitle">En attente ({{ getPendingRequests().length }})</h3>
+          <div class="requests-list">
+            <div *ngFor="let request of getPendingRequests()" class="request-card">
+              <div class="request-header">
+                <div class="request-user">
+                  <div class="user-avatar">
+                    {{ request.apprenant.firstName.charAt(0) }}{{ request.apprenant.lastName.charAt(0) }}
+                  </div>
+                  <div class="user-info">
+                    <h4>{{ request.apprenant.firstName }} {{ request.apprenant.lastName }}</h4>
+                    <p class="request-date">{{ formatDate(request.createdAt) }}</p>
+                  </div>
+                </div>
+                <span [class]="'status-badge ' + getStatusColor(request.status)">
+                  {{ getStatusLabel(request.status) }}
+                </span>
+              </div>
+              <p *ngIf="request.message" class="request-message">{{ request.message }}</p>
+              <div class="request-actions">
+                <button
+                  (click)="updateRequestStatus(request, 'ACCEPTED')"
+                  class="btn-accept">
+                  ✅ Accepter
+                </button>
+                <button
+                  (click)="updateRequestStatus(request, 'REJECTED')"
+                  class="btn-reject">
+                  ❌ Rejeter
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demandes acceptées -->
+        <div *ngIf="getAcceptedRequests().length > 0" class="requests-section">
+          <h3 class="section-subtitle">Acceptées ({{ getAcceptedRequests().length }})</h3>
+          <div class="requests-list">
+            <div *ngFor="let request of getAcceptedRequests()" class="request-card">
+              <div class="request-header">
+                <div class="request-user">
+                  <div class="user-avatar">
+                    {{ request.apprenant.firstName.charAt(0) }}{{ request.apprenant.lastName.charAt(0) }}
+                  </div>
+                  <div class="user-info">
+                    <h4>{{ request.apprenant.firstName }} {{ request.apprenant.lastName }}</h4>
+                    <p class="request-date">{{ formatDate(request.createdAt) }}</p>
+                  </div>
+                </div>
+                <span [class]="'status-badge ' + getStatusColor(request.status)">
+                  {{ getStatusLabel(request.status) }}
+                </span>
+              </div>
+              <p *ngIf="request.message" class="request-message">{{ request.message }}</p>
+              <div class="request-actions">
+                <button
+                  (click)="updateRequestStatus(request, 'COMPLETED')"
+                  class="btn-complete">
+                  ✓ Marquer comme complétée
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demandes complétées -->
+        <div *ngIf="getCompletedRequests().length > 0" class="requests-section">
+          <h3 class="section-subtitle">Complétées ({{ getCompletedRequests().length }})</h3>
+          <div class="requests-list">
+            <div *ngFor="let request of getCompletedRequests()" class="request-card completed">
+              <div class="request-header">
+                <div class="request-user">
+                  <div class="user-avatar">
+                    {{ request.apprenant.firstName.charAt(0) }}{{ request.apprenant.lastName.charAt(0) }}
+                  </div>
+                  <div class="user-info">
+                    <h4>{{ request.apprenant.firstName }} {{ request.apprenant.lastName }}</h4>
+                    <p class="request-date">{{ formatDate(request.createdAt) }}</p>
+                  </div>
+                </div>
+                <span [class]="'status-badge ' + getStatusColor(request.status)">
+                  {{ getStatusLabel(request.status) }}
+                </span>
+              </div>
+              <p *ngIf="request.message" class="request-message">{{ request.message }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="mentoringRequests.length === 0" class="empty-state">
+          <div class="empty-icon">📬</div>
+          <h3>Aucune demande de mentorat</h3>
+          <p>Les demandes de mentorat apparaîtront ici</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

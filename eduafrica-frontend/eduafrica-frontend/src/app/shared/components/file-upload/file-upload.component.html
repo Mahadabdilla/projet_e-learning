@@ -1,0 +1,104 @@
+<div class="file-upload-container">
+  <!-- Zone de drop -->
+  <div
+    class="upload-zone"
+    [class.dragging]="isDragging"
+    [class.uploading]="isUploading"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)">
+    
+    <input
+      type="file"
+      [id]="'file-input-' + fileType"
+      [accept]="accept"
+      [multiple]="multiple"
+      (change)="onFileSelected($event)"
+      class="file-input"
+      [disabled]="isUploading">
+    
+    <label [for]="'file-input-' + fileType" class="upload-label">
+      <div class="upload-content">
+        <div class="upload-icon">📤</div>
+        <p class="upload-text">
+          <span *ngIf="!isUploading">Glissez-déposez des fichiers ici ou cliquez pour sélectionner</span>
+          <span *ngIf="isUploading">Upload en cours...</span>
+        </p>
+        <p class="upload-hint" *ngIf="accept">
+          Types acceptés : {{ accept }}
+        </p>
+        <p class="upload-hint">
+          Taille maximale : {{ maxSizeMB }} MB
+        </p>
+      </div>
+    </label>
+  </div>
+
+  <!-- Fichiers sélectionnés (en attente d'upload) -->
+  <div *ngIf="selectedFiles.length > 0" class="selected-files">
+    <h4 class="section-title">Fichiers sélectionnés</h4>
+    <div class="file-list">
+      <div *ngFor="let file of selectedFiles" class="file-item">
+        <span class="file-icon">{{ getFileIcon(file) }}</span>
+        <div class="file-info">
+          <p class="file-name">{{ file.name }}</p>
+          <p class="file-size">{{ formatFileSize(file.size) }}</p>
+        </div>
+        <button
+          *ngIf="!isUploading"
+          (click)="removeFile(file)"
+          class="remove-btn"
+          type="button">
+          ×
+        </button>
+        <div *ngIf="isUploading && uploadProgress[file.name]" class="progress-bar">
+          <div class="progress-fill" [style.width.%]="uploadProgress[file.name]"></div>
+        </div>
+      </div>
+    </div>
+    <button
+      *ngIf="!isUploading"
+      (click)="uploadFiles()"
+      class="upload-btn"
+      type="button">
+      Uploader les fichiers
+    </button>
+  </div>
+
+  <!-- Fichiers uploadés -->
+  <div *ngIf="uploadedFiles.length > 0" class="uploaded-files">
+    <h4 class="section-title">Fichiers uploadés</h4>
+    <div class="file-list">
+      <div *ngFor="let fileUpload of uploadedFiles" class="file-item uploaded">
+        <span class="file-icon">
+          <span *ngIf="fileUpload.fileType === 'IMAGE'">🖼️</span>
+          <span *ngIf="fileUpload.fileType === 'VIDEO'">🎥</span>
+          <span *ngIf="fileUpload.fileType === 'DOCUMENT'">📄</span>
+          <span *ngIf="fileUpload.fileType !== 'IMAGE' && fileUpload.fileType !== 'VIDEO' && fileUpload.fileType !== 'DOCUMENT'">📎</span>
+        </span>
+        <div class="file-info">
+          <p class="file-name">{{ fileUpload.originalFileName }}</p>
+          <p class="file-size">{{ formatFileSize(fileUpload.fileSize) }}</p>
+        </div>
+        <div class="file-actions">
+          <a
+            [href]="getFileUrl(fileUpload.id)"
+            target="_blank"
+            class="view-btn"
+            *ngIf="fileUpload.fileType === 'IMAGE'">
+            👁️ Voir
+          </a>
+          <button
+            (click)="removeUploadedFile(fileUpload)"
+            class="remove-btn"
+            type="button">
+            🗑️
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
